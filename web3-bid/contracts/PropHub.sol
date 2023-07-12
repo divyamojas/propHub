@@ -46,12 +46,12 @@ contract PropHub {
         uint256 _basePrice,
         string memory _location,
         uint256 _bidDuration
-    ) external returns (bool) {
+    ) external returns (uint256) {
         require(_basePrice > 0, "Base price must be greater than zero");
 
         uint256 endTime = block.timestamp + _bidDuration;
 
-        properties[propertyIdCounter] = Property(
+        Property memory newProperty = Property(
             propertyIdCounter,
             payable(msg.sender),
             _title,
@@ -65,9 +65,9 @@ contract PropHub {
             endTime
         );
 
+        properties[propertyIdCounter] = newProperty;
         propertyIdCounter++;
-
-        return true;
+        return propertyIdCounter - 1;
     }
 
     function bidProperty(uint256 _propertyId) external payable returns (bool) {
@@ -93,7 +93,6 @@ contract PropHub {
         property.bidIds.push(bidId);
 
         bidIdCounter++;
-
         return true;
     }
 
@@ -136,7 +135,9 @@ contract PropHub {
         return true;
     }
 
-    function getProperty(uint256 _propertyId)
+    function getProperty(
+        uint256 _propertyId
+    )
         external
         view
         returns (
@@ -173,16 +174,9 @@ contract PropHub {
         return propertyIdCounter - 1;
     }
 
-    function getBid(uint256 _bidId)
-        external
-        view
-        returns (
-            uint256,
-            address,
-            uint256,
-            bool
-        )
-    {
+    function getBid(
+        uint256 _bidId
+    ) external view returns (uint256, address, uint256, bool) {
         Bid memory bid = bids[_bidId];
         return (bid.propertyId, bid.bidder, bid.amount, bid.refunded);
     }
