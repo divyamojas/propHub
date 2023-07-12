@@ -2,17 +2,17 @@
 pragma solidity ^0.8.9;
 
 contract PropHub {
-    enum PropertyCategory {
-        Residential,
-        Commercial
-    }
+    // enum PropertyCategory {
+    //     Residential,
+    //     Commercial
+    // }
 
     struct Property {
         uint256 propertyId;
         address payable owner;
         string title;
         string description;
-        PropertyCategory category;
+        // PropertyCategory category;
         uint256 area;
         uint256 basePrice;
         string location;
@@ -41,7 +41,7 @@ contract PropHub {
     function listProperty(
         string memory _title,
         string memory _description,
-        PropertyCategory _category,
+        // PropertyCategory _category,
         uint256 _area,
         uint256 _basePrice,
         string memory _location,
@@ -56,7 +56,7 @@ contract PropHub {
             payable(msg.sender),
             _title,
             _description,
-            _category,
+            // _category,
             _area,
             _basePrice,
             _location,
@@ -145,7 +145,7 @@ contract PropHub {
             address,
             string memory,
             string memory,
-            PropertyCategory,
+            // PropertyCategory,
             uint256,
             uint256,
             string memory,
@@ -160,7 +160,7 @@ contract PropHub {
             property.owner,
             property.title,
             property.description,
-            property.category,
+            // property.category,
             property.area,
             property.basePrice,
             property.location,
