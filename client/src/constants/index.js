@@ -11,11 +11,7 @@ export const navlinks = [
     imgUrl: listProperty,
     link: '/list-property',
   },
-  {
-    name: 'bid-property',
-    imgUrl: bidProperty,
-    link: '/bid-property',
-  },
+
   {
     name: 'my-activities',
     imgUrl: profile,

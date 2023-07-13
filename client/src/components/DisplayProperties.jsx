@@ -2,13 +2,13 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 // import { loader } from "../assets";
-import FundCard from "./PropertyCard";
+import PropertyCard from "./PropertyCard";
 
 const DisplayProperties = ({ title, isLoading, properties }) => {
   const navigate = useNavigate();
 
   const handleNavigate = (property) => {
-    navigate(`/property-details/${property.property_id}`, { state: property });
+    navigate(`/property-details/${property.propertyId}`, { state: property });
   };
 
   return (
@@ -35,7 +35,7 @@ const DisplayProperties = ({ title, isLoading, properties }) => {
         {!isLoading &&
           properties.length > 0 &&
           properties.map((property, i) => (
-            <FundCard
+            <PropertyCard
               key={i}
               {...property}
               handleClick={() => handleNavigate(property)}
