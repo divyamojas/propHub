@@ -12,12 +12,12 @@ const DisplayProperties = ({ title, isLoading, properties }) => {
   };
 
   return (
-    <div>
+    <div className="">
       <h1 className="font-epilogue font-semibold text-[18px] text-white text-left">
         {title} ({properties.length})
       </h1>
 
-      <div className="flex flex-wrap mt-[20px] gap-[26px]">
+      <div className="flex flex-wrap mt-[20px] mb-[20px] gap-[26px]">
         {isLoading && (
           <img
             src={loader}

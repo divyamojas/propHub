@@ -139,7 +139,7 @@ const ListProperty = () => {
           <CustomButton
             btnType="submit"
             title="Create an Ad for Property"
-            styles="bg-[#1dc071]"
+            styles="bg-[#8c6dfd]"
           />
         </div>
       </form>
