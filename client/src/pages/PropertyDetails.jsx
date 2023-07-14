@@ -58,8 +58,8 @@ const CampaignDetails = () => {
                             className="absolute h-full bg-[#4acd8d] rounded-xl"
                             style={{
                                 width: `${calculateBarPercentage(
-                                    state.target,
-                                    state.amountCollected
+                                    state.endTime,
+                                    1111111111111
                                 )}%`,
                                 maxWidth: "100%",
                             }}
@@ -73,6 +73,7 @@ const CampaignDetails = () => {
                         title={`Highest Bid `}
                         value={/*state.amountCollected*/ 129}
                     />
+                    <CountBox title="Base Price" value={state.basePrice} />
                     <CountBox title="Total Bids" value={bids.length} />
                 </div>
             </div>
@@ -81,7 +82,7 @@ const CampaignDetails = () => {
                 <div className="flex-[2] flex flex-col gap-[40px]">
                     <div>
                         <h4 className="font-epilogue font-semibold text-[18px] text-white uppercase">
-                            Creator
+                            Seller
                         </h4>
                         <div className="mt-[20px] flex flex-row items-center flex-wrap gap-[14px]">
                             <div className="w-[52px] h-[52px] flex items-center justify-center rounded-full bg-[#2c2f32] cursor-pointer">
@@ -109,6 +110,29 @@ const CampaignDetails = () => {
                             <p className="mt-[4px] font-epilogue font-normal text-[16px] text-[#808191] leading-[26px] text-justify">
                                 {state.description}
                             </p>
+                        </div>
+                    </div>
+                    <div className="flex justify-start w-full">
+                        <div className="mr-20">
+
+                            <h4 className="font-epilogue font-semibold text-[18px] text-white uppercase">
+                                Base Price
+                            </h4>
+                            <div className="mt-[20px]">
+                                <p className="mt-[4px] font-epilogue font-normal text-[16px] text-[#808191] leading-[26px] text-justify">
+                                    {state.basePrice}
+                                </p>
+                            </div>
+                        </div>
+                        <div className="">
+                            <h4 className="font-epilogue font-semibold text-[18px] text-white uppercase">
+                                Location
+                            </h4>
+                            <div className="mt-[20px]">
+                                <p className="mt-[4px] font-epilogue font-normal text-[16px] text-[#808191] leading-[26px] text-justify">
+                                    {state.location}
+                                </p>
+                            </div>
                         </div>
                     </div>
 
