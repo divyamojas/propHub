@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 
 import { Home, Profile, ListProperty, BidProperty, PropertyDetails, MyActivities } from "./pages";
 import { Sidebar, Navbar } from "./components";
+import { useStateContext } from "./context";
 
 const App = () => {
   console.clear();
