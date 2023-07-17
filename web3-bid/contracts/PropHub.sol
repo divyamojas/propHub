@@ -138,55 +138,55 @@ contract PropHub {
         return true;
     }
 
-    function getProperty(
-        uint256 _propertyId
-    )
-        external
-        view
-        returns (
-            uint256,
-            address,
-            string memory,
-            string memory,
-            PropertyCategory,
-            uint256,
-            uint256,
-            string memory,
-            bool,
-            uint256[] memory,
-            uint256,
-            string memory
-        )
-    {
-        Property memory property = properties[_propertyId];
-        return (
-            property.propertyId,
-            property.owner,
-            property.title,
-            property.description,
-            property.category,
-            property.area,
-            property.basePrice,
-            property.location,
-            property.sold,
-            property.bidIds,
-            property.endTime,
-            property.imgUrl
-        );
-    }
+    // function getProperty(
+    //     uint256 _propertyId
+    // )
+    //     external
+    //     view
+    //     returns (
+    //         uint256,
+    //         address,
+    //         string memory,
+    //         string memory,
+    //         PropertyCategory,
+    //         uint256,
+    //         uint256,
+    //         string memory,
+    //         bool,
+    //         uint256[] memory,
+    //         uint256,
+    //         string memory
+    //     )
+    // {
+    //     Property memory property = properties[_propertyId];
+    //     return (
+    //         property.propertyId,
+    //         property.owner,
+    //         property.title,
+    //         property.description,
+    //         property.category,
+    //         property.area,
+    //         property.basePrice,
+    //         property.location,
+    //         property.sold,
+    //         property.bidIds,
+    //         property.endTime,
+    //         property.imgUrl
+    //     );
+    // }
 
-    function getPropertyCount() external view returns (uint256) {
-        return propertyIdCounter - 1;
-    }
+    // function getPropertyCount() external view returns (uint256) {
+    //     return propertyIdCounter - 1;
+    // }
 
-    function getBid(
-        uint256 _bidId
-    ) external view returns (uint256, address, uint256, bool) {
-        Bid memory bid = bids[_bidId];
-        return (bid.propertyId, bid.bidder, bid.amount, bid.refunded);
-    }
+//     function getBid(
+//         uint256 _bidId
+//     ) external view returns (uint256, address, uint256, bool) {
+//         Bid memory bid = bids[_bidId];
+//         return (bid.propertyId, bid.bidder, bid.amount, bid.refunded);
+//     }
 
-    function getBidCount() external view returns (uint256) {
-        return bidIdCounter - 1;
-    }
+//     function getBidCount() external view returns (uint256) {
+//         return bidIdCounter - 1;
+//     }
 }
