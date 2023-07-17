@@ -31,8 +31,7 @@ const ListProperty = () => {
       return;
     }
     checkIfImage(form.imgUrl, async (exists) => {
-      // if (exists) {
-      if (true) {
+      if (exists) {
         setIsLoading(false) // true;
         console.log({
           title: form.title.toString(),
@@ -40,7 +39,7 @@ const ListProperty = () => {
           area: form.area * 1,
           basePrice: form.basePrice * 1,
           location: form.location.toString(),
-          endTime: new Date(form.endTime).getTime(),
+          endTime: new Date(form.endTime).getTime() - new Date().getTime(),
           imgUrl: form.imgUrl.toString(),
           category: form.category.toLowerCase() == 'residential' ? 0 : 1
         });
@@ -51,7 +50,7 @@ const ListProperty = () => {
           form.area * 1,
           form.basePrice * 1,
           form.location,
-          new Date(form.endTime).getTime(),
+          new Date(form.endTime).getTime() - new Date().getTime(),
           form.imgUrl
         );
         setIsLoading(false);
