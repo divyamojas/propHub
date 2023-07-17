@@ -2,23 +2,24 @@
 pragma solidity ^0.8.9;
 
 contract PropHub {
-    // enum PropertyCategory {
-    //     Residential,
-    //     Commercial
-    // }
+    enum PropertyCategory {
+        Residential,
+        Commercial
+    }
 
     struct Property {
         uint256 propertyId;
         address payable owner;
         string title;
         string description;
-        // PropertyCategory category;
+        PropertyCategory category;
         uint256 area;
         uint256 basePrice;
         string location;
         bool sold;
         uint256[] bidIds;
         uint256 endTime;
+        string imgUrl;
     }
 
     struct Bid {
@@ -41,11 +42,12 @@ contract PropHub {
     function listProperty(
         string memory _title,
         string memory _description,
-        // PropertyCategory _category,
+        PropertyCategory _category,
         uint256 _area,
         uint256 _basePrice,
         string memory _location,
-        uint256 _bidDuration
+        uint256 _bidDuration,
+        string memory imgUrl
     ) external returns (uint256) {
         require(_basePrice > 0, "Base price must be greater than zero");
 
@@ -56,13 +58,14 @@ contract PropHub {
             payable(msg.sender),
             _title,
             _description,
-            // _category,
+            _category,
             _area,
             _basePrice,
             _location,
             false,
             new uint256[](0),
-            endTime
+            endTime,
+            imgUrl
         );
 
         properties[propertyIdCounter] = newProperty;
@@ -145,13 +148,14 @@ contract PropHub {
             address,
             string memory,
             string memory,
-            // PropertyCategory,
+            PropertyCategory,
             uint256,
             uint256,
             string memory,
             bool,
             uint256[] memory,
-            uint256
+            uint256,
+            string memory
         )
     {
         Property memory property = properties[_propertyId];
@@ -160,13 +164,14 @@ contract PropHub {
             property.owner,
             property.title,
             property.description,
-            // property.category,
+            property.category,
             property.area,
             property.basePrice,
             property.location,
             property.sold,
             property.bidIds,
-            property.endTime
+            property.endTime,
+            property.imgUrl
         );
     }
 
