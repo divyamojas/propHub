@@ -1,16 +1,16 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-// import { loader } from "../assets";
+import { loader } from "../assets";
 import PropertyCard from "./PropertyCard";
-import { useStateContext } from "../context";
+// import { useStateContext } from "../context";
 
-const DisplayProperties =  ({ title, isLoading, properties }) => {
+const DisplayProperties = ({ title, isLoading, properties }) => {
   const navigate = useNavigate();
 
-  const { getPropertyDetails } = useStateContext();
-  const property =  getPropertyDetails(1); 
-  console.log(property)
+  // const { getPropertyDetails } = useStateContext();
+  // const property =  getPropertyDetails(1); 
+  // console.log(property)
 
   const handleNavigate = (property) => {
     navigate(`/property-details/${property.propertyId}`, { state: property });

@@ -10,28 +10,28 @@ export const StateContextProvider = ({ children }) => {
 
     const [address, setAddress] = useState(false);
     const [accounts, setAccounts] = useState(false);
-    const contractAddress = '0x3e2F8F2AF4f70564AB8B2B00aD3a81a7f53bE9D5';
+    const contractAddress = '0xB607AE1DEbe521e388515e70E6870F8E4d97DfF1';
 
-    const web3 = new Web3(window.ethereum);
-    const contract = new web3.eth.Contract(ABI, contractAddress);
+    const web3 = new Web3(window.ethereum); // create web3 object
+    const contract = new web3.eth.Contract(ABI, contractAddress); // get the contract from ABI and address
 
     const connect = async () => {
         try {
-            window.ethereum.enable().then(async () => {
-                await getAccounts().then(acc => {
-                    setAccounts(acc);
-                    setAddress(acc[0]);
+            window.ethereum.enable() // connect metaMask
+                .then(async () => {
+                    await getAccounts().then(acc => {
+                        setAccounts(acc);
+                        setAddress(acc[0]); // set user account
 
-                }).then((res) => {
-                    console.log(res)
+                    }).then((res) => {
+                        console.log(res)
+                    });
+
                 });
-
-            });
 
         } catch (error) {
             console.log(error)
         }
-
     }
 
     const getAccounts = async () => {
@@ -44,22 +44,35 @@ export const StateContextProvider = ({ children }) => {
             return null;
         }
     };
-
-    const getPropertyDetails = async (pId) => {
-
-        await contract.methods
-            .getProperty(pId)
-            .call()
-            .then((result) => {
-                // console.log(result);
-                return result;
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-
+    async function getProperties() {
+        const count = await contract.methods.propertyIdCounter().call();
+        const properties = [];
+        if (count == 1) {
+            console.log("No Properties Listed yet.");
+            return [];
+        }
+        for (let i = 1; i < count; i++) {
+            const property = await contract.methods.properties(i).call();
+            properties.push(property)
+        }
+        return properties;
     }
-    
+
+    // const getPropertyDetails = async (pId) => {
+
+    //     await contract.methods
+    //         .getProperty(pId)
+    //         .call()
+    //         .then((result) => {
+    //             // console.log(result);
+    //             return result;
+    //         })
+    //         .catch((error) => {
+    //             console.error(error);
+    //         });
+
+    // }
+
     const listProperty = async (title, description, category, area, basePrice, location, endTime, imgUrl) => {
         // const addr = await 
         await contract.methods
@@ -103,11 +116,10 @@ export const StateContextProvider = ({ children }) => {
                     setAccounts(acc);
                     setAddress(acc[0]);
 
-                }).then((res) => {
-                    console.log(res)
-                });
+                })
                 const connectedAccount = accounts[0];
                 console.log('Connected account:', connectedAccount);
+                getProperties()
             } else {
                 // User has not authorized the site or no accounts are available
                 console.log('No connected account');
@@ -122,7 +134,7 @@ export const StateContextProvider = ({ children }) => {
                 // contract,
                 getAccounts,
                 connect,
-                getPropertyDetails,
+                getProperties,
                 listProperty
             }}
         >
@@ -132,3 +144,21 @@ export const StateContextProvider = ({ children }) => {
 };
 
 export const useStateContext = () => useContext(StateContext);
+
+
+/* @METHODS 
+bidIdCounter : ƒ ()
+bidIdCounter() : ƒ ()
+bidProperty : ƒ ()
+bidProperty(uint256) : ƒ ()
+bids : ƒ ()
+bids(uint256) : ƒ ()
+closeBidding : ƒ ()
+closeBidding(uint256) : ƒ ()
+listProperty : ƒ ()
+listProperty(string,string,uint8,uint256,uint256,string,uint256,string) : ƒ ()
+properties : ƒ ()
+properties(uint256) : ƒ ()
+propertyIdCounter : ƒ ()
+propertyIdCounter() : ƒ ()
+ */

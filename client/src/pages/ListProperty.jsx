@@ -25,7 +25,11 @@ const ListProperty = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    if ((form.category.toLowerCase() !== 'residential' && form.category.toLowerCase() !== 'commercial')) {
+      window.alert('The category can only be "Residential" or "Commercial".');
+      setForm({ ...form, category: "" })
+      return;
+    }
     checkIfImage(form.imgUrl, async (exists) => {
       // if (exists) {
       if (true) {
@@ -61,6 +65,7 @@ const ListProperty = () => {
 
   const handleFormFieldChange = (fieldName, e) => {
     setForm({ ...form, [fieldName]: e.target.value });
+
   };
 
   return (
