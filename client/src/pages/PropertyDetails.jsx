@@ -15,8 +15,9 @@ const CampaignDetails = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [amount, setAmount] = useState("");
     const [bids, setBids] = useState([]);
-
+    console.log(state.endTime)
     const remainingDays = daysLeft(state.endTime);
+    console.log(state.endTime / (1000 * 3600 * 24) , remainingDays)
 
     const handleBid = async () => {
         setIsLoading(true);
