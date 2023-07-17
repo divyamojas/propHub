@@ -5,23 +5,21 @@ import { loader, money } from "../assets";
 import { CustomButton, FormField, Loader } from "../components";
 import { checkIfImage } from "../utils";
 import { useNavigate } from "react-router-dom";
+import { useStateContext } from "../context";
 // import { useStateContext } from "../context";
 
 const ListProperty = () => {
   const navigate = useNavigate();
+  const { listProperty } = useStateContext();
   const [isLoading, setIsLoading] = useState(false);
   const [form, setForm] = useState({
-    // propertyId: "",
-    // owner: "",
     title: "",
-    category: "",
     description: "",
     area: "",
+    category: "",
     location: "",
     basePrice: "",
     imgUrl: "",
-    // sold: "",
-    // bidIds: "",
     endTime: "",
   });
 
@@ -29,13 +27,29 @@ const ListProperty = () => {
     e.preventDefault();
 
     checkIfImage(form.imgUrl, async (exists) => {
-      if (exists) {
-        setIsLoading(true);
-        console.log(form);
-        await createCampaign({
-          ...form,
-          target: ethers.utils.parseUnits(form.target, 18),
+      // if (exists) {
+      if (true) {
+        setIsLoading(false) // true;
+        console.log({
+          title: form.title.toString(),
+          description: form.description.toString(),
+          area: form.area * 1,
+          basePrice: form.basePrice * 1,
+          location: form.location.toString(),
+          endTime: new Date(form.endTime).getTime(),
+          imgUrl: form.imgUrl.toString(),
+          category: form.category.toLowerCase() == 'residential' ? 0 : 1
         });
+        await listProperty(
+          form.title,
+          form.description,
+          form.category.toLowerCase() == 'residential' ? 0 : 1,
+          form.area * 1,
+          form.basePrice * 1,
+          form.location,
+          new Date(form.endTime).getTime(),
+          form.imgUrl
+        );
         setIsLoading(false);
         navigate("/");
       } else {
@@ -72,10 +86,10 @@ const ListProperty = () => {
           />
           <FormField
             labelName="Category *"
-            placeholder="Residential or Commercial"
+            placeholder="Residential or Commercial only!"
             inputType="text"
             value={form.category}
-            handleChange={(e) => handleFormFieldChange("description", e)}
+            handleChange={(e) => handleFormFieldChange("category", e)}
           />
         </div>
         <FormField
@@ -86,16 +100,6 @@ const ListProperty = () => {
           value={form.description}
           handleChange={(e) => handleFormFieldChange("description", e)}
         />
-        {/* <div className="w-full flex justify-start items-center p-4 bg-[#8c6dfd] h-[120px] rounded-[10px]">
-          <img
-            src={money}
-            alt="money"
-            className="w-[40px] h-[40px] object-contain"
-          />
-          <h4 className="font-epilogue font-bold text-[25px] text-white ml-[20px]">
-            You will get 100% of the raised amount
-          </h4>
-        </div> */}
         <div className="flex flex-wrap gap-[40px]">
           <FormField
             labelName="Area *"
@@ -116,7 +120,7 @@ const ListProperty = () => {
           <FormField
             labelName="Base Price *"
             placeholder="ETH 0.50"
-            inputType="number"
+            inputType="text"
             value={form.basePrice}
             handleChange={(e) => handleFormFieldChange("basePrice", e)}
           />
@@ -131,9 +135,9 @@ const ListProperty = () => {
         <FormField
           labelName="Property image *"
           placeholder="Place Image URL of your property here"
-          inputType="url"
-          value={form.image}
-          handleChange={(e) => handleFormFieldChange("image", e)}
+          inputType="text"
+          value={form.imgUrl}
+          handleChange={(e) => handleFormFieldChange("imgUrl", e)}
         />
         <div className="flex justify-center items-center mt-[40px]">
           <CustomButton

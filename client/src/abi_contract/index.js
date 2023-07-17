@@ -84,6 +84,11 @@ export const ABI = [
                 "type": "string"
             },
             {
+                "internalType": "enum PropHub.PropertyCategory",
+                "name": "category",
+                "type": "uint8"
+            },
+            {
                 "internalType": "uint256",
                 "name": "area",
                 "type": "uint256"
@@ -99,11 +104,6 @@ export const ABI = [
                 "type": "string"
             },
             {
-                "internalType": "string",
-                "name": "imgUrl",
-                "type": "string"
-            },
-            {
                 "internalType": "bool",
                 "name": "sold",
                 "type": "bool"
@@ -112,6 +112,11 @@ export const ABI = [
                 "internalType": "uint256",
                 "name": "endTime",
                 "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "imgUrl",
+                "type": "string"
             }
         ],
         "stateMutability": "view",
@@ -145,6 +150,11 @@ export const ABI = [
                 "type": "string"
             },
             {
+                "internalType": "enum PropHub.PropertyCategory",
+                "name": "_category",
+                "type": "uint8"
+            },
+            {
                 "internalType": "uint256",
                 "name": "_area",
                 "type": "uint256"
@@ -160,14 +170,14 @@ export const ABI = [
                 "type": "string"
             },
             {
-                "internalType": "string",
-                "name": "imgUrl",
-                "type": "string"
-            },
-            {
                 "internalType": "uint256",
                 "name": "_bidDuration",
                 "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "imgUrl",
+                "type": "string"
             }
         ],
         "name": "listProperty",
@@ -251,9 +261,9 @@ export const ABI = [
                 "type": "string"
             },
             {
-                "internalType": "uint256",
+                "internalType": "enum PropHub.PropertyCategory",
                 "name": "",
-                "type": "uint256"
+                "type": "uint8"
             },
             {
                 "internalType": "uint256",
@@ -261,9 +271,9 @@ export const ABI = [
                 "type": "uint256"
             },
             {
-                "internalType": "string",
+                "internalType": "uint256",
                 "name": "",
-                "type": "string"
+                "type": "uint256"
             },
             {
                 "internalType": "string",
@@ -284,6 +294,11 @@ export const ABI = [
                 "internalType": "uint256",
                 "name": "",
                 "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
             }
         ],
         "stateMutability": "view",
