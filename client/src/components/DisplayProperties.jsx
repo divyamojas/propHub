@@ -1,16 +1,21 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import { loader } from "../assets";
 import PropertyCard from "./PropertyCard";
-// import { useStateContext } from "../context";
 
 const DisplayProperties = ({ title, isLoading, properties }) => {
   const navigate = useNavigate();
 
-  // const { getPropertyDetails } = useStateContext();
-  // const property =  getPropertyDetails(1); 
-  // console.log(property)
+  properties.sort((a, b) => {
+    if (a.endTime > b.endTime) {
+      return 1;
+    } else if (a.endTime < b.endTime) {
+      return -1;
+    } else {
+      return 0;
+    }
+  })
 
   const handleNavigate = (property) => {
     navigate(`/property-details/${property.propertyId}`, { state: property });

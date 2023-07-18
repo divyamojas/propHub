@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { tagType, home_50 } from "../assets";
-import { daysLeft, highestBidOnProperty, propertyBids } from "../utils";
-import { BIDS } from "../Obj";
+import { daysLeft } from "../utils";
+import { useStateContext } from "../context";
 
 const PropertyCard = ({
   propertyId,
@@ -10,20 +10,39 @@ const PropertyCard = ({
   title,
   description,
   category,
-  area,
   basePrice,
-  location,
   imgUrl,
-  sold,
-  bidIds,
   endTime,
   handleClick
 }) => {
-  const remainingDays = daysLeft(endTime);
+
+  const [highestBid, setHighestBid] = useState(0);
+
+  const { getBids, contract, address } = useStateContext();
   const categ = ['Residential', 'Commercial'];
-  const bids = propertyBids(BIDS, propertyId);
-  const maxBid = highestBidOnProperty(BIDS, propertyId);
-  return (
+
+  const remainingDays = daysLeft(endTime);
+  const fetchBids = async () => {
+    const data = await getBids(propertyId);
+    data.sort((a, b) => {
+      if (a.amount > b.amount) {
+        return 1;
+      } else if (a.amount < b.amount) {
+        return -1;
+      } else {
+        return 0;
+      }
+
+    })
+    if (data.length > 0) setHighestBid(data[0].amount / 10 ** 18)
+    else setHighestBid(basePrice)
+  };
+
+  useEffect(() => {
+    if (contract) {
+      fetchBids();
+    }
+  }, [contract, address]); return (
     <div
       className="sm:w-[288px] w-full rounded-[15px] bg-[#1c1c24] cursor-pointer"
       onClick={handleClick}
@@ -58,11 +77,11 @@ const PropertyCard = ({
           <div className="flex flex-col">
             <h4 className="font-epilogue font-semibold text-[14px] text-[#b2b3bd] leading-[22px]">
               {/* {amountCollected} */}
-              {maxBid}
+              {highestBid} ETH
             </h4>
             <p className="mt-[3px] font-epilogue font-normal text-[12px] leading-[18px] text-[#808191] sm:max-w-[120px] truncate">
               {/* Raised Of {target} */}
-              Highest Bid
+              {highestBid === basePrice ? "Base Price(no bids)":"Highest Bid"}
             </p>
           </div>
           <div className="flex flex-col">

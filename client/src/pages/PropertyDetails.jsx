@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-// import { useStateContext } from "../context";
 import { CountBox, CustomButton, Loader } from "../components";
-import { calculateBarPercentage, daysLeft } from "../utils";
+import {  daysLeft } from "../utils";
 import { home_50 } from "../assets";
 import { useStateContext } from "../context";
 
@@ -16,9 +15,9 @@ const PropertyDetails = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [amount, setAmount] = useState("");
     const [bids, setBids] = useState([]);
-    const [blockTimestamp, setBlockTimestamp] = useState(0);
+    const [highestBid, setHighestBid] = useState(0);
 
-    const { bidProperty, getBids, contract, address, blockTime } = useStateContext();
+    const { bidProperty, getBids, contract, address } = useStateContext();
 
 
     /**
@@ -40,19 +39,23 @@ const PropertyDetails = () => {
 
     const fetchBids = async () => {
         const data = await getBids(state.propertyId);
+        data.sort((a, b) => {
+            if (a.amount > b.amount) {
+                return 1;
+            } else if (a.amount < b.amount) {
+                return -1;
+            } else {
+                return 0;
+            }
+        })
+        setHighestBid(data[0].amount)
 
-        setBids(data);
+        setBids(data.sort());
     };
-
-    const fetchTimestamp = async () => {
-        const time = await blockTime(0);
-        setBlockTimestamp(time)
-    }
 
     useEffect(() => {
         if (contract) {
             fetchBids();
-            fetchTimestamp()
         }
     }, [contract, address]);
     return (
@@ -83,7 +86,7 @@ const PropertyDetails = () => {
                     <CountBox title="Days Left" value={remainingDays} />
                     <CountBox
                         title={`Highest Bid `}
-                        value={/*state.amountCollected*/ 129}
+                        value={highestBid / 10**18}
                     />
                     <CountBox title="Base Price" value={state.basePrice} />
                     <CountBox title="Total Bids" value={bids.length} />
