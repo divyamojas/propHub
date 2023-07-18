@@ -1,6 +1,5 @@
 import React, { useContext, createContext, useState, useEffect } from "react";
 import Web3 from 'web3';
-import { ethers } from "ethers";
 
 import { ABI } from '../abi_contract'
 
@@ -12,9 +11,11 @@ export const StateContextProvider = ({ children }) => {
     const [accounts, setAccounts] = useState(false);
     const contractAddress = '0x11E8C3aBC66F11DD9581E6BCDA29a83119940F84';
 
+
     const web3 = new Web3(window.ethereum); // create web3 object
     const contract = new web3.eth.Contract(ABI, contractAddress); // get the contract from ABI and address
 
+    // Connect metaMask
     const connect = async () => {
         try {
             window.ethereum.enable() // connect metaMask
@@ -47,34 +48,29 @@ export const StateContextProvider = ({ children }) => {
     async function getProperties() {
         const count = await contract.methods.propertyIdCounter().call();
         const properties = [];
+        const userBought = [];
+        const userListed = [];
         if (count == 1) {
             console.log("No Properties Listed yet.");
             return [];
         }
         for (let i = 1; i < count; i++) {
             const property = await contract.methods.properties(i).call();
-            properties.push(property)
+            properties.push(property);
+            if (property.owner === address && property.sold) {
+                userBought.push(property);
+            }
+            if (property.owner === address && !(property.sold)) {
+                userListed.push(property);
+            }
+
         }
-        return properties;
+        return { properties, userBought, userListed }
     }
 
-    // const getPropertyDetails = async (pId) => {
 
-    //     await contract.methods
-    //         .getProperty(pId)
-    //         .call()
-    //         .then((result) => {
-    //             // console.log(result);
-    //             return result;
-    //         })
-    //         .catch((error) => {
-    //             console.error(error);
-    //         });
-
-    // }
 
     const listProperty = async (title, description, category, area, basePrice, location, endTime, imgUrl) => {
-        // const addr = await 
         await contract.methods
             .listProperty(title, description, category, area, basePrice, location, endTime, imgUrl)
             .send({ from: address, gas: 1000000 }) // gas price approx : 290000
@@ -88,24 +84,7 @@ export const StateContextProvider = ({ children }) => {
             });
     }
 
-    // Check if MetaMask is available
-    if (typeof window.ethereum !== 'undefined') {
-        // Get the MetaMask provider
-        const provider = window.ethereum;
 
-        // Listen for the 'accountsChanged' event
-        provider.on('accountsChanged', (accounts) => {
-            if (accounts.length === 0) {
-                // User has disconnected their MetaMask account
-                setAddress(false)
-                console.log('User disconnected their MetaMask account');
-            } else {
-                // User has switched to a different MetaMask account
-                setAddress(accounts[0])
-                console.log('User switched MetaMask account:', accounts[0]);
-            }
-        });
-    }
     useEffect(() => {
         web3.eth.getAccounts(async (error, accounts) => {
             if (error) {
@@ -126,6 +105,25 @@ export const StateContextProvider = ({ children }) => {
             }
         });
 
+        // Check if MetaMask is available
+        if (typeof window.ethereum !== 'undefined') {
+            // Get the MetaMask provider
+            const provider = window.ethereum;
+
+            // Listen for the 'accountsChanged' event
+            provider.on('accountsChanged', (accounts) => {
+                if (accounts.length === 0) {
+                    // User has disconnected their MetaMask account
+                    setAddress(false)
+                    console.log('User disconnected their MetaMask account');
+                } else {
+                    // User has switched to a different MetaMask account
+                    setAddress(accounts[0])
+                    console.log('User switched MetaMask account:', accounts[0]);
+                }
+            });
+        }
+
     }, [address])
     return (
         <StateContext.Provider
@@ -134,8 +132,8 @@ export const StateContextProvider = ({ children }) => {
                 // contract,
                 getAccounts,
                 connect,
-                getProperties,
-                listProperty
+                listProperty,
+                getProperties
             }}
         >
             {children}

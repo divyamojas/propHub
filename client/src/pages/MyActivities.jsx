@@ -1,28 +1,42 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { CustomButton, DisplayProperties } from '../components'
-import { PROPERTIES } from '../Obj'
 import { useNavigate } from 'react-router-dom'
+import { useStateContext } from '../context'
 
 const MyActivities = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  const [bought, setBought] = useState([]);
+  const [listed, setListed] = useState([]);
+
+  const { getProperties } = useStateContext();
+
+  const fetchProperties = async () => {
+    setIsLoading(true);
+    const data = await getProperties(); // we are fetching data here because we cannot await in useEffect
+    setBought(data.userBought);
+    setListed(data.userListed);
+  };
+
+  useEffect(() => {
+    fetchProperties();
+    setIsLoading(false);
+  })
+  useEffect(() => {
+
+  }, [])
   return (
     <div>
       <DisplayProperties
         title="Properties Bought"
         isLoading={false} // isLoading
-        properties={PROPERTIES}
+        properties={bought}
         nullText="You haven't bought any properties mate!"
-      />
-      <DisplayProperties
-        title="Properties sold"
-        isLoading={false} // isLoading
-        properties={[]}
-        nullText="You haven't sold any property yet!"
       />
       <DisplayProperties
         title="Properties listed for sale"
         isLoading={false} // isLoading
-        properties={[]}
+        properties={listed}
         nullText="Go list a property!"
       />
       <div className="flex justify-center items-center mt-[40px]">
