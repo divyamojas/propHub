@@ -90,6 +90,19 @@ export const StateContextProvider = ({ children }) => {
             });
     }
 
+    // get all the bids on a given property
+    async function getBids(pId) {
+        const bidIdCounter = await contract.methods.bidIdCounter().call();
+        const bids = [];
+        for (let i = 1; i < bidIdCounter; i++) {
+            const bid = await contract.methods.bids(i).call();
+            if (bid.propertyId == pId) {
+                bids.push(bid);
+            }
+        }
+        return bids;
+    }
+
     // Raise a bid for the property.
     async function bidProperty(pId, bidValue) {
         const bidValueEth = web3.utils.toWei(bidValue, 'ether'); // turn number into eth
@@ -158,12 +171,13 @@ export const StateContextProvider = ({ children }) => {
         <StateContext.Provider
             value={{
                 address,
-                // contract,
+                contract,
                 getAccounts,
                 connect,
                 listProperty,
                 getProperties,
-                bidProperty
+                bidProperty,
+                getBids
             }}
         >
             {children}

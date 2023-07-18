@@ -17,7 +17,7 @@ const CampaignDetails = () => {
     const [amount, setAmount] = useState("");
     const [bids, setBids] = useState([]);
 
-    const { bidProperty } = useStateContext();
+    const { bidProperty, getBids, contract, address } = useStateContext();
 
     const remainingDays = daysLeft(state.endTime);
 
@@ -30,15 +30,15 @@ const CampaignDetails = () => {
     };
 
 
-    // const fetchBidders = async () => {
-    //     const data = await getBids(state.pId);
+    const fetchBids = async () => {
+        const data = await getBids(state.propertyId);
 
-    //     setBids(data);
-    // };
+        setBids(data);
+    };
 
-    // useEffect(() => {
-    //     if (contract) fetchDonators();
-    // }, [contract, address]);
+    useEffect(() => {
+        if (contract) fetchBids();
+    }, [contract, address]);
     return (
         <div>
             {isLoading && <Loader />}
@@ -140,14 +140,14 @@ const CampaignDetails = () => {
                             {bids.length > 0 ? (
                                 bids.map((item, index) => (
                                     <div
-                                        key={`${item.donator}-${index}`}
+                                        key={`${item.bidder}-${index}`}
                                         className="flex justify-between items-center gap-4"
                                     >
                                         <p className="font-epilogue font-normal text-[16px] text-[#b2b3bd] leading-[26px] break-all">
-                                            {index + 1}. {item.donator}
+                                            {index + 1}. {item.bidder}
                                         </p>
                                         <p className="font-epilogue font-normal text-[16px] text-[#b2b3bd] leading-[26px] break-all">
-                                            {item.donation} Eth
+                                            {item.amount / 10 ** 18} Eth
                                         </p>
                                     </div>
                                 ))
