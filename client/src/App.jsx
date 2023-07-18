@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Route, Routes } from "react-router-dom";
 
-import { Home, Profile, ListProperty, BidProperty, PropertyDetails, MyActivities } from "./pages";
+import { Home, Profile, ListProperty, PropertyDetails, MyActivities } from "./pages";
 import { Sidebar, Navbar } from "./components";
-import { useStateContext } from "./context";
 
 const App = () => {
   console.clear();
@@ -17,7 +16,6 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/list-property" element={<ListProperty />} />
-          <Route path="/bid-property" element={<BidProperty />} />
           <Route path="/my-activities" element={<MyActivities />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/property-details/:id" element={<PropertyDetails />} />
