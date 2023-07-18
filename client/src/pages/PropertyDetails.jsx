@@ -7,7 +7,7 @@ import { calculateBarPercentage, daysLeft } from "../utils";
 import { home_50 } from "../assets";
 import { useStateContext } from "../context";
 
-const CampaignDetails = () => {
+const PropertyDetails = () => {
     const { state } = useLocation();
     const navigate = useNavigate();
 
@@ -16,9 +16,17 @@ const CampaignDetails = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [amount, setAmount] = useState("");
     const [bids, setBids] = useState([]);
+    const [blockTimestamp, setBlockTimestamp] = useState(0);
 
-    const { bidProperty, getBids, contract, address } = useStateContext();
+    const { bidProperty, getBids, contract, address, blockTime } = useStateContext();
 
+
+    /**
+     * 
+     * ListProperties : time(sec) => blockchain
+     * blockchain : time(sec) => time + block timestamp
+     * 
+     */
     const remainingDays = daysLeft(state.endTime);
 
     const handleBid = async () => {
@@ -36,8 +44,16 @@ const CampaignDetails = () => {
         setBids(data);
     };
 
+    const fetchTimestamp = async () => {
+        const time = await blockTime(0);
+        setBlockTimestamp(time)
+    }
+
     useEffect(() => {
-        if (contract) fetchBids();
+        if (contract) {
+            fetchBids();
+            fetchTimestamp()
+        }
     }, [contract, address]);
     return (
         <div>
@@ -49,7 +65,7 @@ const CampaignDetails = () => {
                         alt="campaign"
                         className="w-full h-[410px] object-cover rounded-xl"
                     />
-                    <div className="relative w-full h-[5px] bg-[#3a3a43] mt-2 rounded-xl">
+                    {/* <div className="relative w-full h-[5px] bg-[#3a3a43] mt-2 rounded-xl">
                         <div
                             className="absolute h-full bg-[#4acd8d] rounded-xl"
                             style={{
@@ -60,7 +76,7 @@ const CampaignDetails = () => {
                                 maxWidth: "100%",
                             }}
                         ></div>
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className="flex md:w-[150px] w-full flex-wrap justify-between gap-[30px]">
@@ -93,7 +109,7 @@ const CampaignDetails = () => {
                                     {state.owner}
                                 </h4>
                                 <p className="mt-[4px] font-epilogue font-normal text-[12px] text-[#808191]">
-                                    10 Campaigns
+                                    10 Properties
                                 </p>
                             </div>
                         </div>
@@ -191,4 +207,4 @@ const CampaignDetails = () => {
     );
 };
 
-export default CampaignDetails;
+export default PropertyDetails;

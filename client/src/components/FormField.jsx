@@ -7,6 +7,7 @@ const FormField = ({
   isTextArea,
   value,
   handleChange,
+  step
 }) => {
   return (
     <label htmlFor="" className="flex-1 w-full flex flex-col">
@@ -31,7 +32,7 @@ const FormField = ({
           placeholder={placeholder}
           onChange={handleChange}
           type={inputType}
-          step="0.1"
+          step={step}
           className="py-[15px] sm:px-[25px] outline-none border-[1px] border-[#3a3a43] bg-transparent font-epilogue text-white text-[14px] placeholder:text-[#4b5264] rounded-[10px] sm:min-w-[300px]"
         />
       )}

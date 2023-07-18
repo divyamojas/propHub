@@ -9,7 +9,7 @@ export const StateContextProvider = ({ children }) => {
 
     const [address, setAddress] = useState(false);
     const [accounts, setAccounts] = useState(false);
-    const contractAddress = '0xD13cf5DAcA5e96E19B721a7cA457aE1B7A0e2C62';
+    const contractAddress = '0x0eBc5b184c293d5fB7493B75fD646337960a8477';
 
 
     const web3 = new Web3(window.ethereum); // create web3 object
@@ -35,6 +35,12 @@ export const StateContextProvider = ({ children }) => {
         } catch (error) {
             console.log(error)
         }
+    }
+
+    // get gen block time
+    async function blockTime(bId) {
+        const block = await web3.eth.getBlock(bId);
+        return block.timestamp;
     }
 
 
@@ -177,7 +183,8 @@ export const StateContextProvider = ({ children }) => {
                 listProperty,
                 getProperties,
                 bidProperty,
-                getBids
+                getBids,
+                blockTime
             }}
         >
             {children}

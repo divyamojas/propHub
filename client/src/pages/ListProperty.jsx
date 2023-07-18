@@ -20,7 +20,7 @@ const ListProperty = () => {
     location: "",
     basePrice: "",
     imgUrl: "",
-    endTime: "",
+    saleDuration: "",
   });
 
   const handleSubmit = async (e) => {
@@ -39,7 +39,7 @@ const ListProperty = () => {
           area: form.area * 1,
           basePrice: form.basePrice * 1,
           location: form.location.toString(),
-          endTime: new Date(form.endTime).getTime() - new Date().getTime(),
+          saleDuration: form.saleDuration * 24 * 3600,
           imgUrl: form.imgUrl.toString(),
           category: form.category.toLowerCase() == 'residential' ? 0 : 1
         });
@@ -50,7 +50,7 @@ const ListProperty = () => {
           form.area * 1,
           form.basePrice * 1,
           form.location,
-          new Date(form.endTime).getTime() - new Date().getTime(),
+          form.saleDuration * 24 * 3600, // block.timestamp in the blockchain stores in seconds NOT milliseconds.
           form.imgUrl
         );
         setIsLoading(false);
@@ -109,6 +109,7 @@ const ListProperty = () => {
             labelName="Area *"
             placeholder="in square feet only.."
             inputType="number"
+            step = "10"
             value={form.area}
             handleChange={(e) => handleFormFieldChange("area", e)}
           />
@@ -125,15 +126,17 @@ const ListProperty = () => {
             labelName="Base Price *"
             placeholder="ETH 0.50"
             inputType="text"
+            step = "0.1"
             value={form.basePrice}
             handleChange={(e) => handleFormFieldChange("basePrice", e)}
           />
           <FormField
-            labelName="Bid End Date *"
-            placeholder="Bid End Date"
-            inputType="date"
-            value={form.endTime}
-            handleChange={(e) => handleFormFieldChange("endTime", e)}
+            labelName="Number of days for sale *"
+            placeholder="Number of days for sale.."
+            inputType="number"
+            step = "1"
+            value={form.saleDuration} 
+            handleChange={(e) => handleFormFieldChange("saleDuration", e)}
           />
         </div>
         <FormField
