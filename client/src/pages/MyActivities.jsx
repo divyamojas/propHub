@@ -14,8 +14,8 @@ const MyActivities = () => {
   const fetchProperties = async () => {
     setIsLoading(true);
     const data = await getProperties(); // we are fetching data here because we cannot await in useEffect
-    setBought(data.userBought);
-    setListed(data.userListed);
+    if (data.userBought) setBought(data.userBought);
+    if (data.userListed) setListed(data.userListed);
   };
 
   useEffect(() => {

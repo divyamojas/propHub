@@ -11,7 +11,7 @@ const Home = () => {
     const fetchProperties = async () => {
         setIsLoading(true);
         const data = await getProperties(); // we are fetching data here because we cannot await in useEffect
-        setproperties(data.properties);
+        if (data.properties) setproperties(data.properties);
     };
 
     useEffect(() => {

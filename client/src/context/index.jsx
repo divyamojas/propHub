@@ -9,7 +9,7 @@ export const StateContextProvider = ({ children }) => {
 
     const [address, setAddress] = useState(false);
     const [accounts, setAccounts] = useState(false);
-    const contractAddress = '0x11E8C3aBC66F11DD9581E6BCDA29a83119940F84';
+    const contractAddress = '0xD13cf5DAcA5e96E19B721a7cA457aE1B7A0e2C62';
 
 
     const web3 = new Web3(window.ethereum); // create web3 object
