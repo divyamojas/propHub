@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { CountBox, CustomButton, Loader } from "../components";
 import { calculateBarPercentage, daysLeft } from "../utils";
 import { home_50 } from "../assets";
+import { useStateContext } from "../context";
 
 const CampaignDetails = () => {
     const { state } = useLocation();
@@ -15,32 +16,26 @@ const CampaignDetails = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [amount, setAmount] = useState("");
     const [bids, setBids] = useState([]);
-    console.log(state.endTime)
+
+    const { bidProperty } = useStateContext();
+
     const remainingDays = daysLeft(state.endTime);
-    console.log(state.endTime / (1000 * 3600 * 24) , remainingDays)
 
     const handleBid = async () => {
         setIsLoading(true);
-
-        await donate(state.pId, amount);
+        console.log(state.propertyId, amount)
+        await bidProperty(state.propertyId, amount);
         setIsLoading(false);
         navigate("/");
     };
-    // const handleDelete = async () => {
-    //     setIsLoading(true);
 
-    //     await deleteCampaign(state.pId);
-    //     setIsLoading(false);
-    //     navigate("/");
-    // };
 
-    // const fetchDonators = async () => {
-    //     const data = await getDonations(state.pId);
+    // const fetchBidders = async () => {
+    //     const data = await getBids(state.pId);
 
     //     setBids(data);
     // };
 
-    console.log(state);
     // useEffect(() => {
     //     if (contract) fetchDonators();
     // }, [contract, address]);
@@ -182,15 +177,6 @@ const CampaignDetails = () => {
                                 value={amount}
                                 onChange={(e) => setAmount(e.target.value)}
                             />
-                            {/* <div className="my-[20px] p-4 bg-[#13131a] rounded-[10px]">
-                                <h4 className="font-epilogue font-semibold text-[14px] leading[22px] text-white">
-                                    Back it because you believe in it
-                                </h4>
-                                <p className="mt-[20px] font-epilogue font-normal leading-[22px] text-[#808191]">
-                                    Support the project for no reward, just because it speaks for
-                                    you.
-                                </p>
-                            </div> */}
                             <CustomButton
                                 btnType="button"
                                 title="Raise Bid"
@@ -201,16 +187,6 @@ const CampaignDetails = () => {
                     </div>
                 </div>
             </div>
-            {/* <div className="mt-[30px]">
-                <CustomButton
-                    btnType="button"
-                    title="Delete Campaign"
-                    styles="w-full bg-transparent text-red border-[1px] border-[red]"
-
-                    deleteButton={true}
-                    handleClick={handleDelete}
-                />
-            </div> */}
         </div>
     );
 };

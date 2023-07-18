@@ -73,7 +73,7 @@ export const StateContextProvider = ({ children }) => {
     const listProperty = async (title, description, category, area, basePrice, location, endTime, imgUrl) => {
         await contract.methods
             .listProperty(title, description, category, area, basePrice, location, endTime, imgUrl)
-            .send({ from: address, gas: 1000000 }) // gas price approx : 290000
+            .send({ from: address, gas: 1000000 }) // gas price approx : 290000-500000
             .then((result) => {
                 console.log("Property listed at id:", result);
                 return result;
@@ -84,6 +84,25 @@ export const StateContextProvider = ({ children }) => {
             });
     }
 
+    async function bidProperty(pId, bidValue) {
+        const bidValueEth = web3.utils.toWei(bidValue, 'ether'); // turn number into eth
+
+        // Call the contract function
+        await contract.methods
+            .bidProperty(pId)
+            .send({
+                from: address,
+                to: contractAddress,
+                gas: 1000000,
+                value: bidValueEth,
+            })
+            .then((receipt) => {
+                console.log('Transaction receipt:', receipt);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
 
     useEffect(() => {
         web3.eth.getAccounts(async (error, accounts) => {
@@ -133,7 +152,8 @@ export const StateContextProvider = ({ children }) => {
                 getAccounts,
                 connect,
                 listProperty,
-                getProperties
+                getProperties,
+                bidProperty
             }}
         >
             {children}
