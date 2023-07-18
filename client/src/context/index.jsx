@@ -130,6 +130,17 @@ export const StateContextProvider = ({ children }) => {
             });
     }
 
+    async function closeBidding() {
+        const count = await contract.methods.propertyIdCounter().call();
+        for (let i = 1; i < count; i++) {
+            await contract.methods.closeBidding(i)
+        }
+    }
+
+    setInterval(() => {
+        closeBidding();
+    }, 60000);
+
 
 
     useEffect(() => {
