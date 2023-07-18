@@ -15,6 +15,8 @@ export const StateContextProvider = ({ children }) => {
     const web3 = new Web3(window.ethereum); // create web3 object
     const contract = new web3.eth.Contract(ABI, contractAddress); // get the contract from ABI and address
 
+
+
     // Connect metaMask
     const connect = async () => {
         try {
@@ -35,6 +37,8 @@ export const StateContextProvider = ({ children }) => {
         }
     }
 
+
+    // Get accounts connected to the app at the moment.
     const getAccounts = async () => {
         try {
             const accounts = await web3.eth.getAccounts();
@@ -45,6 +49,8 @@ export const StateContextProvider = ({ children }) => {
             return null;
         }
     };
+
+    // get an array of all properties, properties listed by the user and the properties bought by the user.
     async function getProperties() {
         const count = await contract.methods.propertyIdCounter().call();
         const properties = [];
@@ -69,7 +75,7 @@ export const StateContextProvider = ({ children }) => {
     }
 
 
-
+    // List the property for sale.
     const listProperty = async (title, description, category, area, basePrice, location, endTime, imgUrl) => {
         await contract.methods
             .listProperty(title, description, category, area, basePrice, location, endTime, imgUrl)
@@ -84,6 +90,7 @@ export const StateContextProvider = ({ children }) => {
             });
     }
 
+    // Raise a bid for the property.
     async function bidProperty(pId, bidValue) {
         const bidValueEth = web3.utils.toWei(bidValue, 'ether'); // turn number into eth
 
@@ -104,12 +111,15 @@ export const StateContextProvider = ({ children }) => {
             });
     }
 
+
+
     useEffect(() => {
+        // to check for changes in accounts connected to the app using metaMask wallet.
         web3.eth.getAccounts(async (error, accounts) => {
             if (error) {
                 console.error('Error retrieving accounts:', error);
             } else if (accounts.length > 0) {
-                // User has authorized the site and accounts are available
+                // when user has authorized the site and accounts are available
                 await getAccounts().then(acc => {
                     setAccounts(acc);
                     setAddress(acc[0]);
@@ -119,7 +129,7 @@ export const StateContextProvider = ({ children }) => {
                 console.log('Connected account:', connectedAccount);
                 getProperties()
             } else {
-                // User has not authorized the site or no accounts are available
+                // when user has not authorized the site or no accounts are available
                 console.log('No connected account');
             }
         });
