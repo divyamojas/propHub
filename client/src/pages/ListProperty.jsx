@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { ethers } from "ethers";
 
-import { loader, money } from "../assets";
 import { CustomButton, FormField, Loader } from "../components";
 import { checkIfImage } from "../utils";
 import { useNavigate } from "react-router-dom";
@@ -109,7 +107,7 @@ const ListProperty = () => {
             labelName="Area *"
             placeholder="in square feet only.."
             inputType="number"
-            step = "10"
+            step="10"
             value={form.area}
             handleChange={(e) => handleFormFieldChange("area", e)}
           />
@@ -126,7 +124,7 @@ const ListProperty = () => {
             labelName="Base Price *"
             placeholder="ETH 0.50"
             inputType="text"
-            step = "0.1"
+            step="0.1"
             value={form.basePrice}
             handleChange={(e) => handleFormFieldChange("basePrice", e)}
           />
@@ -134,8 +132,8 @@ const ListProperty = () => {
             labelName="Number of days for sale *"
             placeholder="Number of days for sale.."
             inputType="number"
-            step = "1"
-            value={form.saleDuration} 
+            step="1"
+            value={form.saleDuration}
             handleChange={(e) => handleFormFieldChange("saleDuration", e)}
           />
         </div>

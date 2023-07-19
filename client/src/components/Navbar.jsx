@@ -34,10 +34,10 @@ const Navbar = () => {
       <div className="sm:flex hidden flex-row justify-end gap-4">
         <CustomButton
           btnType="button"
-          title={address[0] != null ? "Sell a Property?" : "Connect"}
-          styles={address[0] ? "bg-[#1dc071]" : "bg-[#8c6dfd]"}
+          title={address ? "Sell a Property?" : "Connect"}
+          styles={address ? "bg-[#1dc071]" : "bg-[#8c6dfd]"}
           handleClick={() => {
-            if (address[0]) navigate("list-property");
+            if (address) navigate("list-property");
             else connect();
           }}
         />
@@ -98,16 +98,6 @@ const Navbar = () => {
             ))}
           </ul>
           <div className="flex mx-4">
-            {/* <CustomButton
-              btnType="button"
-              title={address ? "Create a Campaign" : "Connect"}
-              styles={address ? "bg-[#1dc071]" : "bg-[#8c6dfd]"}
-              handleClick={() => {
-                setToggleDrawer((prev) => !prev);
-                if (address) navigate("create-campaign");
-                else connect();
-              }}
-            /> */}
           </div>
         </div>
       </div>

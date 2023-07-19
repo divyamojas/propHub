@@ -1,7 +1,7 @@
 export const daysLeft = (deadline) => {
   const diff = deadline * 1000 - new Date();
-  const remainingDays = diff / ( 1000 * 3600 * 24);
-  return remainingDays.toFixed(0);
+  const remainingDays = diff / (1000 * 3600 * 24);
+  return remainingDays.toFixed(5);
 };
 
 export const calculateBarPercentage = (goal, raisedAmount) => {
@@ -30,18 +30,5 @@ export const propertyBids = (bids, propertyId) => {
 
 
   return bidsProperty;
-
-}
-export const highestBidOnProperty = (bids, propertyId) => {
-  const bidsProperty = [];
-  let maxBid = 0;
-  bids.forEach(bid => {
-    if (bid.propertyId === propertyId && bid.amount > maxBid) {
-      maxBid = bid.amount;
-    }
-  });
-
-
-  return maxBid;
 
 }

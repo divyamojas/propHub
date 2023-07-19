@@ -5,26 +5,29 @@ import { useStateContext } from "../context";
 
 const Home = () => {
     const [isLoading, setIsLoading] = useState(true);
-    const [properties, setproperties] = useState([]);
+    const [properties, setProperties] = useState([]);
     const { getProperties } = useStateContext();
-
     const fetchProperties = async () => {
         setIsLoading(true);
         const data = await getProperties(); // we are fetching data here because we cannot await in useEffect
-        if (data.properties) setproperties(data.properties);
+
+
+        const activeProperties = data.properties?.filter(el => el.endTime * 1000 - new Date() > 0)
+
+        if (activeProperties) setProperties(activeProperties);
     };
 
     useEffect(() => {
         fetchProperties();
         setIsLoading(false);
-    })
+    }, [])
 
 
     return (
 
         <DisplayProperties
             title="Properties for sale"
-            isLoading={isLoading} // isLoading
+            isLoading={isLoading}
             properties={properties}
         />
 

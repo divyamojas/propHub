@@ -24,16 +24,7 @@ const PropertyCard = ({
   const remainingDays = daysLeft(endTime);
   const fetchBids = async () => {
     const data = await getBids(propertyId);
-    data.sort((a, b) => {
-      if (a.amount > b.amount) {
-        return 1;
-      } else if (a.amount < b.amount) {
-        return -1;
-      } else {
-        return 0;
-      }
-
-    })
+    data.sort((a, b) => b.amount - a.amount)
     if (data.length > 0) setHighestBid(data[0].amount / 10 ** 18)
     else setHighestBid(basePrice)
   };
@@ -42,7 +33,9 @@ const PropertyCard = ({
     if (contract) {
       fetchBids();
     }
-  }, [contract, address]); return (
+  }, [contract, address]);
+
+  return (
     <div
       className="sm:w-[288px] w-full rounded-[15px] bg-[#1c1c24] cursor-pointer"
       onClick={handleClick}
@@ -81,17 +74,23 @@ const PropertyCard = ({
             </h4>
             <p className="mt-[3px] font-epilogue font-normal text-[12px] leading-[18px] text-[#808191] sm:max-w-[120px] truncate">
               {/* Raised Of {target} */}
-              {highestBid === basePrice ? "Base Price(no bids)":"Highest Bid"}
+              {
+                remainingDays > 0 ?
+                  (highestBid === basePrice ?
+                    "Base Price(no bids)"
+                    : "Highest Bid")
+                  : "Purchase Price"
+              }
             </p>
           </div>
-          <div className="flex flex-col">
+          {remainingDays > 0 && <div className="flex flex-col">
             <h4 className="font-epilogue font-semibold text-[14px] text-[#b2b3bd] leading-[22px]">
               {remainingDays}
             </h4>
             <p className="mt-[3px] font-epilogue font-normal text-[12px] leading-[18px] text-[#808191] sm:max-w-[120px] truncate">
               Days Left
             </p>
-          </div>
+          </div>}
         </div>
         <div className="flex items-center mt-[20px] gap-[12px]">
           <div className="w-[30px] h-[30px] rounded-full flex justify-center items-center bg-[#13131a]">
@@ -102,7 +101,7 @@ const PropertyCard = ({
             />
           </div>
           <p className="flex-1 font-epilogue font-normal text-[12px] text-[#808191] truncate">
-            by <span className="text-[#b2b3bd]">{owner}</span>{" "}
+            {remainingDays > 0 ? (<>by <span className="text-[#b2b3bd]">{owner}</span></>) : "mine"}
           </p>
         </div>
       </div>
