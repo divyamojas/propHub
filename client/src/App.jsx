@@ -14,7 +14,7 @@ const App = () => {
       if (typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask) {
         // const requiredNetworkId = '1337'; // Network ID of the required network
         const requiredChainId = '0x539'; // Chain ID of the required network
-        const requiredRpcUrl = 'HTTP://127.0.0.1:7545'; // RPC URL of the required network
+        const requiredRpcUrl = 'http://49.50.90.209:3001/'; // RPC URL of the required network
         const requiredCurrency = 'ETH'; // Required currency symbol
 
         try {
@@ -33,7 +33,7 @@ const App = () => {
               params: [
                 {
                   chainId: requiredChainId,
-                  chainName: 'Loc_GUI',
+                  chainName: 'Dev_cloud',
                   rpcUrls: [requiredRpcUrl],
                   nativeCurrency: {
                     name: 'Ether',
