@@ -9,7 +9,7 @@ export const StateContextProvider = ({ children }) => {
 
     const [address, setAddress] = useState(false);
     const [accounts, setAccounts] = useState(false);
-    const contractAddress = '0xdC211A57509F33c5406B3CD6a3579cabfE32452C';
+    const contractAddress = '0xc0d59103314aD17E30B067E374A64F30bcC7a42a';
 
 
     const web3 = new Web3(window.ethereum); // create web3 object
@@ -114,7 +114,7 @@ export const StateContextProvider = ({ children }) => {
     async function closeBidding(pId) {
 
         await contract.methods.closeBidding(pId)
-        .send({ from: address, gas: 1000000 }).then(res => console.log(res)).catch(err => console.log(err))
+            .send({ from: address, gas: 1000000 }).then(res => console.log(res)).catch(err => console.log(err))
 
     }
 
