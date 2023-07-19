@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { CountBox, CustomButton, Loader } from "../components";
-import {  daysLeft } from "../utils";
+import { daysLeft } from "../utils";
 import { home_50 } from "../assets";
 import { useStateContext } from "../context";
 
@@ -17,16 +17,29 @@ const PropertyDetails = () => {
     const [bids, setBids] = useState([]);
     const [highestBid, setHighestBid] = useState(0);
 
-    const { bidProperty, getBids, contract, address } = useStateContext();
+    const { bidProperty, getBids, contract, address, closeBidding } = useStateContext();
 
-
-    /**
-     * 
-     * ListProperties : time(sec) => blockchain
-     * blockchain : time(sec) => time + block timestamp
-     * 
-     */
     const remainingDays = daysLeft(state.endTime);
+
+    console.log(remainingDays * 1000 * 3600 * 24)
+
+    // Set a timeout to call the closeBidding function when the endTime is reached
+    setTimeout(() => {
+        // Check if the current block timestamp is greater than or equal to the endTime
+        if (Math.floor(Date.now() / 1000) >= state.endTime) {
+            // Call the closeBidding function
+            closeBidding(state.propertyId)
+                .send({ from: address, gas: 1000000 })
+                .then((result) => {
+                    // Handle the result if needed
+                    console.log(result)
+                })
+                .catch((error) => {
+                    // Handle any error that occurs during the function call
+                    console.log(error)
+                });
+        }
+    }, remainingDays * 1000 * 3600 * 24);
 
     const handleBid = async () => {
         setIsLoading(true);
@@ -39,15 +52,7 @@ const PropertyDetails = () => {
 
     const fetchBids = async () => {
         const data = await getBids(state.propertyId);
-        data.sort((a, b) => {
-            if (a.amount > b.amount) {
-                return 1;
-            } else if (a.amount < b.amount) {
-                return -1;
-            } else {
-                return 0;
-            }
-        })
+        data.sort((a, b) => b.amount - a.amount)
         setHighestBid(data[0].amount)
 
         setBids(data.sort());
@@ -86,7 +91,7 @@ const PropertyDetails = () => {
                     <CountBox title="Days Left" value={remainingDays} />
                     <CountBox
                         title={`Highest Bid `}
-                        value={highestBid / 10**18}
+                        value={highestBid / 10 ** 18}
                     />
                     <CountBox title="Base Price" value={state.basePrice} />
                     <CountBox title="Total Bids" value={bids.length} />

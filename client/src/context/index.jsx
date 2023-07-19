@@ -9,7 +9,7 @@ export const StateContextProvider = ({ children }) => {
 
     const [address, setAddress] = useState(false);
     const [accounts, setAccounts] = useState(false);
-    const contractAddress = '0x0eBc5b184c293d5fB7493B75fD646337960a8477';
+    const contractAddress = '0xdC211A57509F33c5406B3CD6a3579cabfE32452C';
 
 
     const web3 = new Web3(window.ethereum); // create web3 object
@@ -22,7 +22,7 @@ export const StateContextProvider = ({ children }) => {
         try {
             window.ethereum.enable() // connect metaMask
                 .then(async () => {
-                    await getAccounts().then(acc => {
+                    await web3.eth.getAccounts().then(acc => {
                         setAccounts(acc);
                         setAddress(acc[0]); // set user account
 
@@ -37,24 +37,7 @@ export const StateContextProvider = ({ children }) => {
         }
     }
 
-    // get gen block time
-    async function blockTime(bId) {
-        const block = await web3.eth.getBlock(bId);
-        return block.timestamp;
-    }
 
-
-    // Get accounts connected to the app at the moment.
-    const getAccounts = async () => {
-        try {
-            const accounts = await web3.eth.getAccounts();
-            console.log('Retrieved accounts:', accounts);
-            return accounts;
-        } catch (error) {
-            console.error('Error retrieving accounts:', error);
-            return null;
-        }
-    };
 
     // get an array of all properties, properties listed by the user and the properties bought by the user.
     async function getProperties() {
@@ -87,12 +70,10 @@ export const StateContextProvider = ({ children }) => {
             .listProperty(title, description, category, area, basePrice, location, endTime, imgUrl)
             .send({ from: address, gas: 1000000 }) // gas price approx : 290000-500000
             .then((result) => {
-                console.log("Property listed at id:", result);
-                return result;
+                console.log("Property listed : ", result);
             })
             .catch((error) => {
                 console.error('Error listing property:', error);
-                return null;
             });
     }
 
@@ -130,16 +111,13 @@ export const StateContextProvider = ({ children }) => {
             });
     }
 
-    async function closeBidding() {
-        const count = await contract.methods.propertyIdCounter().call();
-        for (let i = 1; i < count; i++) {
-            await contract.methods.closeBidding(i)
-        }
+    async function closeBidding(pId) {
+
+        await contract.methods.closeBidding(pId)
+        .send({ from: address, gas: 1000000 }).then(res => console.log(res)).catch(err => console.log(err))
+
     }
 
-    setInterval(() => {
-        closeBidding();
-    }, 60000);
 
 
 
@@ -150,14 +128,10 @@ export const StateContextProvider = ({ children }) => {
                 console.error('Error retrieving accounts:', error);
             } else if (accounts.length > 0) {
                 // when user has authorized the site and accounts are available
-                await getAccounts().then(acc => {
+                await web3.eth.getAccounts().then(acc => {
                     setAccounts(acc);
                     setAddress(acc[0]);
-
                 })
-                const connectedAccount = accounts[0];
-                console.log('Connected account:', connectedAccount);
-                getProperties()
             } else {
                 // when user has not authorized the site or no accounts are available
                 console.log('No connected account');
@@ -168,7 +142,6 @@ export const StateContextProvider = ({ children }) => {
         if (typeof window.ethereum !== 'undefined') {
             // Get the MetaMask provider
             const provider = window.ethereum;
-
             // Listen for the 'accountsChanged' event
             provider.on('accountsChanged', (accounts) => {
                 if (accounts.length === 0) {
@@ -182,20 +155,18 @@ export const StateContextProvider = ({ children }) => {
                 }
             });
         }
-
-    }, [address])
+    }, [address]) // adding 'contract' in the dependency made the app render infinitely.
     return (
         <StateContext.Provider
             value={{
                 address,
                 contract,
-                getAccounts,
                 connect,
-                listProperty,
                 getProperties,
-                bidProperty,
+                listProperty,
                 getBids,
-                blockTime
+                bidProperty,
+                closeBidding
             }}
         >
             {children}
