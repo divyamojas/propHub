@@ -19,7 +19,7 @@ module.exports = {
     },
     dev_cloud: {
       host: "49.50.90.209",     // Localhost (default: none)
-      port: 8545,            // Standard Ethereum port (default: none)
+      port: 3001,            // Standard Ethereum port (default: none)
       network_id: "*",       // Any network (default: none)
     },
     //
