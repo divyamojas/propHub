@@ -26,7 +26,7 @@ const PropertyDetails = () => {
     // Set a timeout to call the closeBidding function when the endTime is reached
     setTimeout(() => {
         // Check if the current block timestamp is greater than or equal to the endTime
-        if (Math.floor(Date.now() / 1000) >= state.endTime) {
+        if (Math.floor(Date.now() / 1000) >= state.endTime && !(state.sold)) {
             // Call the closeBidding function
             closeBidding(state.propertyId)
                 .send({ from: address, gas: 1000000 })
