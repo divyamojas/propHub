@@ -93,7 +93,7 @@ contract PropHub {
 
         uint256 bidId = bidIdCounter;
         bids[bidId] = newBid;
-        property.bidIds.push(bidId);
+        properties[_propertyId].bidIds.push(bidId);
 
         bidIdCounter++;
         return true;
@@ -131,7 +131,7 @@ contract PropHub {
             }
         }
 
-        highestBidder.transfer(highestBid);
+        property.owner.transfer(highestBid);
         property.owner = highestBidder;
         property.sold = true;
 
